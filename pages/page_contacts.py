@@ -4,6 +4,19 @@ from reactpy_router import link
 import json
 import requests
 
+url = "https://api-agenda-8dij.onrender.com/"
+
+token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb3JyZW8iOiJwZWRyb2FiZGllbDI3QGdtYWlsLmNvbSIsImNvbnRyYXNlXHUwMGYxYSI6InBhYXMyNyIsImV4cCI6MTcwMjc5MTcxOX0.ufpClNv5PcciOH7yViYlnBkCB4hamqd46mfxy_sDJcU"
+
+
+def Eliminar(event, id_contact):
+
+        headers = {"Authorization": f"Bearer {token}"}
+        response =  requests.delete(url+"delete_contact/"+id_contact, headers=headers)
+        response.raise_for_status()
+        datos = response.json()
+
+
 def generate_arr_data(data):
     list_data=[]
     for list_contacts in data:
@@ -19,9 +32,12 @@ def generate_arr_data(data):
         contacts.append(list_contacts["direccion"]["numero_interior"])
         contacts.append(list_contacts["direccion"]["colonia"])
         contacts.append(link("Editar", to= f"/Editar_Contacto/{list_contacts['id']}",**{"class":"btn btn-primary"}))
-        contacts.append(html.button({"class": "btn btn-danger"}, "Eliminar" ))
+        contacts.append(html.button({"class":"btn btn-danger", "onClick":lambda event:Eliminar(event, list_contacts['id'])},"Eliminar"))
         list_data.append(contacts)
     return list_data
+
+
+
 
 
 
@@ -33,9 +49,7 @@ def Page_Contacts():
 
     icono = "bi bi-person-vcard"
 
-    url = "https://api-agenda-8dij.onrender.com/"
-
-    token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb3JyZW8iOiJwZWRyb2FiZGllbDI3QGdtYWlsLmNvbSIsImNvbnRyYXNlXHUwMGYxYSI6InBhYXMyNyIsImV4cCI6MTcwMjc5MTcxOX0.ufpClNv5PcciOH7yViYlnBkCB4hamqd46mfxy_sDJcU"
+   
 
     def Datos_Contatos():
 
@@ -44,6 +58,9 @@ def Page_Contacts():
         response.raise_for_status()
         datos = response.json()
         set_tabla_contactos(datos)
+
+
+   
 
         
 

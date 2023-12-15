@@ -61,6 +61,7 @@ def Page_UpdateContact():
         response =  requests.put(url+"update_contact/"+id_contact,data=data, headers=headers)
         response.raise_for_status()
         datos = response.json()
+        
 
 
     hooks.use_effect(Datos, [])
@@ -69,10 +70,6 @@ def Page_UpdateContact():
 
     icono = "bi bi-person-plus"
 
-    def añadir(event):
-        event.preventDefault()
-        # Aquí puedes realizar acciones con los datos del formulario, si es necesario
-        print("Formulario enviado")
 
     return html.div(
         {"id": "app"},
