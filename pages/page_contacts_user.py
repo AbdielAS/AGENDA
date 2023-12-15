@@ -27,6 +27,7 @@ def generate_arr_data(data):
 
 @component
 def Page_ContactsUser():
+    token,setToken = reactpy.hooks.use_state("Ignore")
     titulo = "Contactos"
 
     tabla_contactos, set_tabla_contactos = hooks.use_state([])
@@ -34,8 +35,6 @@ def Page_ContactsUser():
     icono = "bi bi-person-square"
 
     url = "https://api-agenda-8dij.onrender.com/"
-
-    token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb3JyZW8iOiJwZWRyb2FiZGllbDI3QGdtYWlsLmNvbSIsImNvbnRyYXNlXHUwMGYxYSI6InBhYXMyNyIsImV4cCI6MTcwMjc5Njk1MH0.fr2vd74irg2q7WAi-2feroyh2_9Mgn7k3fKvUaPodMo"
 
     def Datos_Contatos():
         email="ernest@gmail.com"
@@ -79,10 +78,20 @@ def Page_ContactsUser():
     ]
 
 
-  
+    def getToken():
+        #return html.script("var elemento = document.getElementById('divToken');elemento.value = 'asdasdasd';console.log('token recibido en home:    '+localStorage.getItem('token'));")
+        return html.script("var elemento = document.getElementById('divToken'); var item = localStorage.getItem('token'); if (item == null) { item = \"None\"; } elemento.value = item; elemento.dispatchEvent(new Event('keypress'));")
+
+    def validarSesion(tkn):
+        script =  ("localStorage.clear();window.location.href = \"/\";" if (tkn == "None") else "localStorage.clear();localStorage.setItem(\"token\", \""+tkn+"\");") if tkn != "Ignore" else ""  
+        return html.script(script)
+    
 
     return html.div(
         {"id": "app"},
+        html.input({"style":"display:none","id": "divToken","onkeypress":lambda event:setToken(str(event['currentTarget']['value']))}),
+        getToken(),
+        validarSesion(token),
         html.div(
             {"id": "wrapper"},
             navbarMenu.Navbar(),
