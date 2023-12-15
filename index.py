@@ -2,7 +2,7 @@ from reactpy import component
 from fastapi import FastAPI
 from reactpy.backend.fastapi import configure
 from reactpy_router import route, simple
-from pages import page_addcontact, page_contacts, page_requests, page_users, page_createuser, page_contacts_merge, page_contacts_user, page_requests, page_login
+from pages import page_addcontact, page_contacts, page_requests, page_users, page_createuser, page_contacts_merge, page_contacts_user, page_requests, page_login, page_update_user
 #from pages.pages_client import page_catalogo_user, page_requests_user, page_cuentas_user
 
 @component
@@ -18,6 +18,7 @@ def App():
         route("/Ver_Contactos_Combinados", page_contacts_merge.Page_ContactsMerge()),
         route("/Ver_Contactos_Usuario", page_contacts_user.Page_ContactsUser()),
         route("/Solicitudes", page_requests.Page_Solicitudes()),
+         route("/Editar_Contacto/{id}", page_update_user.Page_UpdateContact()),
 
         
         #route("/Admin_Cuentas", page_cuentas_admin.Page_Cuentas()),

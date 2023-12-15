@@ -18,7 +18,7 @@ def generate_arr_data(data):
         contacts.append(list_contacts["direccion"]["num_exterior"])
         contacts.append(list_contacts["direccion"]["numero_interior"])
         contacts.append(list_contacts["direccion"]["colonia"])
-        contacts.append(html.button({"class": "btn btn-primary"}, "Editar" ))
+        contacts.append(link("Editar", to= f"/Editar_Contacto/{list_contacts['id']}",**{"class":"btn btn-primary"}))
         contacts.append(html.button({"class": "btn btn-danger"}, "Eliminar" ))
         list_data.append(contacts)
     return list_data
@@ -44,6 +44,8 @@ def Page_Contacts():
         response.raise_for_status()
         datos = response.json()
         set_tabla_contactos(datos)
+
+        
 
 
     hooks.use_effect(Datos_Contatos, [])
