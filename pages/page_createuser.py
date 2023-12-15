@@ -7,6 +7,7 @@ import requests
 
 @component
 def Page_CreateUser():
+    token,setToken = reactpy.hooks.use_state("Ignore")
     titulo = "Crear Usuario"
 
     icono = "bi bi-person-up"
@@ -15,9 +16,18 @@ def Page_CreateUser():
         event.preventDefault()
         # Aquí puedes realizar acciones con los datos del formulario, si es necesario
         print("Formulario enviado")
+    def getToken():
+        #return html.script("var elemento = document.getElementById('divToken');elemento.value = 'asdasdasd';console.log('token recibido en home:    '+localStorage.getItem('token'));")
+        return html.script("var elemento = document.getElementById('divToken'); var item = localStorage.getItem('token'); if (item == null) { item = \"None\"; } elemento.value = item; elemento.dispatchEvent(new Event('keypress'));")
 
+    def validarSesion(tkn):
+        script =  ("localStorage.clear();window.location.href = \"/\";" if (tkn == "None") else "localStorage.clear();localStorage.setItem(\"token\", \""+tkn+"\");") if tkn != "Ignore" else ""  
+        return html.script(script)
     return html.div(
         {"id": "app"},
+        html.input({"style":"display:none","id": "divToken","onkeypress":lambda event:setToken(str(event['currentTarget']['value']))}),
+        getToken(),
+        validarSesion(token),
         html.div(
             {"id": "wrapper"},
             navbarMenu_inv.Navbar(),

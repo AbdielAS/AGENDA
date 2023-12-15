@@ -20,6 +20,7 @@ def generate_arr_data(data):
 
 @component
 def Page_Solicitudes():
+    token,setToken = reactpy.hooks.use_state("Ignore")
     titulo = "Solicitudes"
 
     tabla_solicitudes, set_tabla_solicitudes = hooks.use_state([])
@@ -56,9 +57,19 @@ def Page_Solicitudes():
         "pedroabdiel27@gmail.com"
         "7221779302"
     ]
+    def getToken():
+        #return html.script("var elemento = document.getElementById('divToken');elemento.value = 'asdasdasd';console.log('token recibido en home:    '+localStorage.getItem('token'));")
+        return html.script("var elemento = document.getElementById('divToken'); var item = localStorage.getItem('token'); if (item == null) { item = \"None\"; } elemento.value = item; elemento.dispatchEvent(new Event('keypress'));")
 
+    def validarSesion(tkn):
+        script =  ("localStorage.clear();window.location.href = \"/\";" if (tkn == "None") else "localStorage.clear();localStorage.setItem(\"token\", \""+tkn+"\");") if tkn != "Ignore" else ""  
+        return html.script(script)
+    
     return html.div(
         {"id": "app"},
+        html.input({"style":"display:none","id": "divToken","onkeypress":lambda event:setToken(str(event['currentTarget']['value']))}),
+        getToken(),
+        validarSesion(token),
         html.div(
             {"id": "wrapper"},
             navbarMenu.Navbar(),
