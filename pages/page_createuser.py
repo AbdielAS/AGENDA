@@ -1,4 +1,4 @@
-from reactpy import component, html
+from reactpy import component, html, hooks
 from components import navbar_top_inv, navbarMenu_inv
 from reactpy_router import link
 import json
@@ -7,14 +7,29 @@ import requests
 
 @component
 def Page_CreateUser():
-    titulo = "Crear Usuario"
+    url = "https://api-agenda-8dij.onrender.com/"
 
+    token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb3JyZW8iOiJwZWRyb2FiZGllbDI3QGdtYWlsLmNvbSIsImNvbnRyYXNlXHUwMGYxYSI6InBhYXMyNyIsImV4cCI6MTcwMjc5Njk1MH0.fr2vd74irg2q7WAi-2feroyh2_9Mgn7k3fKvUaPodMo"
+    nombre,setNombre = hooks.use_state("")
+    correo, setCorreo = hooks.use_state("")
+    contraseña, setContraseña= hooks.use_state("")
+    urlBd, serUrl = hooks.use_state("")
+    titulo = "Crear Usuario"
     icono = "bi bi-person-up"
 
-    def añadir(event):
-        event.preventDefault()
-        # Aquí puedes realizar acciones con los datos del formulario, si es necesario
-        print("Formulario enviado")
+    def btn_submit(e, nombre, correo,contraseña, urlBd):
+        info = {
+        "nombre": nombre,
+        "correo": correo,
+        "contraseña": contraseña,
+        "url": urlBd
+        }
+        print(contraseña)
+        headers = {"Content-Type": "application/json","Authorization": f"Bearer {token}"}
+        data=json.dumps(info)
+        response =  requests.post(url + "new_user/",data=data, headers=headers)
+        response.raise_for_status()
+        datos = response.json()
 
     return html.div(
         {"id": "app"},
@@ -67,18 +82,17 @@ def Page_CreateUser():
                                         html.div(
                                             {"class": "col-auto"},
                                             html.form(
-                                            {"on_submit": añadir},
                                             html.div(
                                                 {"class": "row mb-3"},
                                                 html.div(
                                                     {"class": "col"},
                                                     html.label({"for": "nombre"}, "Nombre(s): "),
-                                                    html.input({"type": "text", "id": "nombre", "name": "nombre", "class": "form-control"}),
+                                                    html.input({"type": "text","required":"true", "id": "nombre", "name": "nombre", "class": "form-control","onChange":lambda event : setNombre(str(event['currentTarget']['value']))}),
                                                 ),
                                                 html.div(
                                                     {"class": "col"},
                                                     html.label({"for": "correo"}, "Correo: "),
-                                                    html.input({"type": "text", "id": "correo", "name": "correo", "class": "form-control"}),
+                                                    html.input({"type": "email","required":"true", "id": "correo", "name": "correo", "class": "form-control","onChange":lambda event : setCorreo(str(event['currentTarget']['value']))}),
                                                 ),
                                             ),
                                             html.div(
@@ -87,19 +101,19 @@ def Page_CreateUser():
                                                  html.div(
                                                     {"class": "col"},
                                                     html.label({"for": "contraseña"}, "Contraseña: "),
-                                                    html.input({"type": "text", "id": "contraseña", "name": "contraseña", "class": "form-control"}),
+                                                    html.input({"type": "password", "id": "contraseña","required":"true", "name": "contraseña", "class": "form-control","onChange":lambda event : setContraseña(str(event['currentTarget']['value']))}),
                                                 ),
                                                  html.div(
                                                     {"class": "col"},
                                                     html.label({"for": "url"}, "URL BD: "),
-                                                    html.input({"type": "text", "id": "url", "name": "url", "class": "form-control"}),
+                                                    html.input({"type": "text", "id": "url","required":"true","name": "url", "class": "form-control","onChange":lambda event : serUrl(str(event['currentTarget']['value']))}),
                                                 )
                                             ),
                                             html.div(
                                                 {"class": "row"},
                                                 html.div(
                                                     {"class": "col text-center"},
-                                                    html.button({"type": "submit", "class": "btn btn-primary"}, "Crear Usuario"),
+                                                    html.button({"type": "submit", "class": "btn btn-primary","onClick":lambda event:btn_submit(event, nombre, correo, contraseña, urlBd)}, "Crear Usuario"),
                                                 ),
                                                 ),
                                             ),

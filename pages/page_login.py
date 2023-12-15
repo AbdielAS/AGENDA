@@ -46,7 +46,7 @@ def login_user():
                                             html.div({"style":"border-radius: 24px;","class":"container-fluid h-100"},
                                                      html.div({"class":"row h-75","style":"background-color: white;border-top-right-radius: 24px;border-top-left-radius: 24px;"},
                                                               html.div({"class":"col-12 pb-1 pt-3 pe-0 ps-0 pb-sm-2 pt-sm-4 pe-sm-2 ps-sm-2 pb-lg-3 pt-lg-5 pe-lg-4 ps-lg-4"},
-                                                                       html.div({"class": "h-100"},
+                                                                       html.div({"class": "h-100 d-flex justify-content-center flex-column"},
                                                                                 html.div({"class":"w-100","style":"color: #47516B; font-size: 24px; font-family: Inter; font-weight: 800; line-height: 32px; word-wrap: break-word"},
                                                                                          "Inicia sesión."
                                                                                          ),
@@ -64,7 +64,8 @@ def login_user():
                                                                                                    ),
                                                                                           msj,
                                                                                           html.button({"type":"button","class":"btn btn-dark col-12","onClick":lambda event:setMsj(btnSubmit(event,email,passwd))},"Iniciar Sesión")
-                                                                                          )
+                                                                                          ),
+                                                                                          link("Crear Cuenta",to="/Crear_Usuario",**{})
                                                                                 )
                                                                        )
                                                               ),

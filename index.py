@@ -5,7 +5,7 @@ from reactpy_router import route, simple
 from pages import page_addcontact, page_contacts, page_requests, page_users, page_createuser, page_contacts_merge, page_contacts_user, page_requests, page_login
 #from pages.pages_client import page_catalogo_user, page_requests_user, page_cuentas_user
 
-@component
+@component  
 def App():
     return simple.router(
         #route("/API", EJEMPLOAPI.App()),
